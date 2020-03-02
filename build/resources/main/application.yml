@@ -1,13 +1,13 @@
 server:
   port: 8999
-    #eureka:
-    #instance:
-    #  preferIpAddress: true
-    #client:
-    #  registerWithEureka: true
-    #  fetchRegistry: true
-    #   serviceUrl:
-  #   defaultZone: http://localhost:8777/eureka/
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8777/eureka/
 spring:
   application:
     name: authservice

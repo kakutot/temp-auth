@@ -85,8 +85,7 @@ CREATE TABLE oauth_refresh_token
      token          LONG VARBINARY,
      authentication LONG VARBINARY
   );
-/*
-  drop table if exists oauth_code;
-create table oauth_code (
-  code VARCHAR(255), authentication LONG VARBINARY
-);*/
+
+create table if not exists revoked_token(
+jwt_token_digest VARCHAR (256) PRIMARY KEY ,
+revocation_date TIMESTAMP DEFAULT now())
