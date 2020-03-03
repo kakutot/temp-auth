@@ -11,28 +11,10 @@ eureka:
 spring:
   application:
     name: authservice
-      #cloud:
-      #gcp:
-      #spanner:
-      #instance-id: test
-      #database: test
-    #project-id: sharp-quest-269317
-  jpa:
-    open-in-view: false
-    #database-platform: com.google.cloud.spanner.hibernate.SpannerDialect
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL5Dialect
-    show-sql: true
-  datasource:
-    initialization-mode: always
-    #url: #jdbc:cloudspanner:/projects/sharp-quest-269317/instances/test/databases/test?credentials=/home/tupkalenko/.config/gcloud/application_default_credentials.json
-    url: jdbc:mysql://localhost:3306/mydb
-    username: root
-    password: rootpassword
-    #driver-class-name: com.google.cloud.spanner.jdbc.JdbcDriver
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    #security:
-    # oauth2:
-    #  resource:
-    #   filter-order: 3
+  profiles:
+    active: default
+  cloud:
+    config:
+      uri: http://localhost:8888
+      enabled: true
+      fail-fast: true

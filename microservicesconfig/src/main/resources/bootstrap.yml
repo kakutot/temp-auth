@@ -1,0 +1,7 @@
+encrypt:
+  key:
+    ISSEMETRIC
+spring:
+  application:
+    name: configserver
+

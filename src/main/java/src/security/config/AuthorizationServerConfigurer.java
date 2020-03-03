@@ -1,6 +1,7 @@
 package src.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -24,29 +25,34 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableAuthorizationServer
+@EnableConfigurationProperties(JWTConfigProperties.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class AuthorizationServerConfigurer extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final DataSource dataSource;
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenStore tokenStore;
+    private final DefaultTokenServices tokenServices;
+    private final JwtAccessTokenConverter accessTokenConverter;
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private TokenStore tokenStore;
-
-    @Autowired
-    private DefaultTokenServices tokenServices;
-
-    @Autowired
-    private JwtAccessTokenConverter accessTokenConverter;
+    public AuthorizationServerConfigurer(AuthenticationManager authenticationManager,
+                                         DataSource dataSource,
+                                         UserDetailsService userDetailsService,
+                                         PasswordEncoder passwordEncoder,
+                                         TokenStore tokenStore,
+                                         DefaultTokenServices tokenServices,
+                                         JwtAccessTokenConverter accessTokenConverter) {
+        this.authenticationManager = authenticationManager;
+        this.dataSource = dataSource;
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenStore = tokenStore;
+        this.tokenServices = tokenServices;
+        this.accessTokenConverter = accessTokenConverter;
+    }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -67,12 +73,14 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(dataSource)
-                .withClient(OauthConsts.DEFAULT_CLIENT_NAME)
+        clients.jdbc(dataSource);
+                /*.withClient(OauthConsts.DEFAULT_CLIENT_NAME)
                 .secret(passwordEncoder.encode(OauthConsts.DEFAULT_CLIENT_SECRET))
                 .authorizedGrantTypes("password", "refresh_token")
                 .accessTokenValiditySeconds(60*60*2)
-                .scopes(ClientScopes.TRUSTED_CLIENT.toString(), ClientScopes.USER_INFO.toString());
+                .scopes(ClientScopes.TRUSTED_CLIENT.toString(), ClientScopes.USER_INFO.toString())
+                .and()
+                .build();*/
     }
 
     @Bean

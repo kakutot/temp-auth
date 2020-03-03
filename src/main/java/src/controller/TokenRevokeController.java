@@ -1,6 +1,5 @@
 package src.controller;
 
-import io.jsonwebtoken.JwtException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +36,6 @@ public class TokenRevokeController {
             tokenRevokingService.revokeToken(tokenV.token);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            if (JwtException.class.isAssignableFrom(e.getClass())) {
-
-                return ResponseEntity.badRequest().build();
-            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 

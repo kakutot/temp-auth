@@ -86,6 +86,6 @@ CREATE TABLE oauth_refresh_token
      authentication LONG VARBINARY
   );
 
-create table if not exists revoked_token(
+CREATE TABLE IF NOT EXISTS revoked_token(
 jwt_token_digest VARCHAR (256) PRIMARY KEY ,
-revocation_date TIMESTAMP DEFAULT now())
+revocation_date TIMESTAMP DEFAULT now());

@@ -14,11 +14,9 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @Service
-@PropertySource(value = "application.properties")
 public class TokenRevokingService {
 
-    @Autowired
-    private RevokedTokenRepository revokedTokenRepository;
+    @Autowired private RevokedTokenRepository revokedTokenRepository;
 
     private String getJWTSignature(final String jwtInBase64) throws NoSuchAlgorithmException {
         byte[] cipheredToken = DatatypeConverter.parseBase64Binary(jwtInBase64);
@@ -27,7 +25,6 @@ public class TokenRevokingService {
 
         return DatatypeConverter.printHexBinary(cipheredTokenDigest);
     }
-
 
     public boolean isTokenRevoked(final String jwtInBase64) throws Exception {
         boolean tokenIsPresent = false;
