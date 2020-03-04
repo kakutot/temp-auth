@@ -17,7 +17,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
     @Autowired
     private OAuth2AccessDeniedHandler auth2AccessDeniedHandler;
 
-    private static final String SECURED_USER_CLIENT = "#oauth2.hasScope('"+ ClientScopes.USER_INFO + "')";
+    private static final String SECURED_USER_CLIENT = "#oauth2.hasScope('"+ ClientScopes.USER_INFO.name() + "')";
 
     private static final String SECURED_PATTERN_USER = "/user";
 

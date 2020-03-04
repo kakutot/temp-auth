@@ -10,5 +10,5 @@ INSERT INTO oauth_client_details
       autoapprove)
 VALUES
     ("DEFAULT_CLIENT", "$2y$12$ZJmVyEJHIstjWpsQX.NrzexYu28k3bgsi/H6V2pEl57tpqQqNErFi",
-     "foo,read,write", "password,authorization_code,refresh_token", null, null,
+     "TRUSTED_CLIENT,USER_INFO", "password,authorization_code,refresh_token", null, null,
        36000, 36000, null, true);

@@ -1,0 +1,11 @@
+encrypt:
+  key: ISSEMETRIC
+spring:
+  application:
+    name: testservice
+  profiles:
+    active: default
+  #cloud:
+    #config:
+      #uri: http://localhost:8888
+      #enabled: true

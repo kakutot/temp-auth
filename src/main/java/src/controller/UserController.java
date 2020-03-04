@@ -7,6 +7,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -21,6 +22,7 @@ import src.model.UserRole;
 import src.model.UserSecured;
 
 import javax.validation.Valid;
+import javax.ws.rs.core.Application;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.stream.Collectors;
@@ -33,29 +35,48 @@ public class UserController {
 
     //Could be extracted into separate service
     @Autowired private UserSecuredRepository userSecuredRepository;
-
     @Autowired private UserRoleRepository userRoleRepository;
-
     @Autowired private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/all")
-    public Collection<UserSecured> findAllUsers() {
-        Iterable<UserSecured> iterable = userSecuredRepository.findAll();
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
-                iterable.iterator(),
-                Spliterator.ORDERED),
-                false)
-                .collect(Collectors.toList());
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserSecured>> findAllUsers() {
+        ResponseEntity<List<UserSecured>> responseEntity;
+
+        try {
+            Iterable<UserSecured> iterable = userSecuredRepository.findAll();
+            responseEntity = ResponseEntity.ok(StreamSupport.stream(Spliterators.spliteratorUnknownSize(
+                    iterable.iterator(),
+                    Spliterator.ORDERED),
+                    false)
+                    .collect(Collectors.toList()));
+        } catch (Exception e) {
+            responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return responseEntity;
     }
 
+    @GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserSecured> findByUsername(@PathVariable(name = "username") final String username) {
+        ResponseEntity<UserSecured> responseEntity;
 
+        try {
+            Optional<UserSecured> userSecured = userSecuredRepository.findFirstByUsername(username);
+            responseEntity = userSecured.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+        } catch (Exception e) {
+            responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return responseEntity;
+    }
+    /*
     @RequestMapping(produces = "application/json")
     public Map<String, Object> user(OAuth2Authentication user) {
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("user", user.getUserAuthentication().getPrincipal());
         userInfo.put("authorities", AuthorityUtils.authorityListToSet(user.getUserAuthentication().getAuthorities()));
         return userInfo;
-    }
+    }*/
 
     @PostMapping(produces = "application/json")
     public ResponseEntity<?> registerNewUser(@Valid @RequestBody UserSecured userSecured, Errors errors) throws URISyntaxException {
@@ -68,6 +89,9 @@ public class UserController {
             return ResponseEntity.badRequest().body(errorsMsg);
         }
 
+        if (userSecuredRepository.findFirstByUsername(userSecured.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("Duplicate username");
+        }
         UserSecured saved;
         Set<UserRole> userRoleSet = new HashSet<>(userSecured.getUserRoles());
         userSecured.getUserRoles().clear();
@@ -85,7 +109,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
-        return ResponseEntity.created(new URI("/user-secured" + userSecured.getId())).body(saved);
+        return ResponseEntity.created(new URI("/user/" + userSecured.getId())).body(saved);
     }
 
     /*

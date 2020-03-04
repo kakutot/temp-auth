@@ -19,9 +19,9 @@ public class TokenRevokeController {
     TokenRevokingService tokenRevokingService;
 
     @GetMapping(value = "/{jwtInHex}")
-    public ResponseEntity<?> isRevoked(@PathVariable final String jwtInHex, OAuth2Authentication auth2Authentication) {
+    public ResponseEntity<String> isRevoked(@PathVariable final String jwtInHex, OAuth2Authentication auth2Authentication) {
         try {
-            return ResponseEntity.ok(tokenRevokingService.isTokenRevoked(jwtInHex));
+            return ResponseEntity.ok(tokenRevokingService.isTokenRevoked(jwtInHex) + "");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

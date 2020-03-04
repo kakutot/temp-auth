@@ -24,29 +24,22 @@ ext {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    //compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-data-spanner'
-    //compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-data-spanner'
-    //compile 'com.google.cloud:google-cloud-spanner-jdbc:1.9.0'
-    //compile 'com.google.cloud:google-cloud-spanner-hibernate-dialect:0.1.
-
     implementation 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "com.h2database:h2:1.4.199"
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     //boot
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-config-client'
+    implementation 'org.springframework.security:spring-security-rsa'
     //cloud
-     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
     //auth
     implementation "org.springframework.cloud:spring-cloud-security"
-    implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.10.BUILD-SNAPSHOT'
-    implementation "org.springframework.security:spring-security-jwt"
-    implementation "org.springframework.security:spring-security-rsa"
-    //data
-    //implementation 'com.h2database:h2'
-    implementation 'mysql:mysql-connector-java'
+    compile 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.10.BUILD-SNAPSHOT'
 
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
