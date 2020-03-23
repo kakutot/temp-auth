@@ -44,13 +44,20 @@ dependencies {
     implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.10.BUILD-SNAPSHOT'
     implementation "org.springframework.security:spring-security-jwt"
     implementation "org.springframework.security:spring-security-rsa"
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-mysql'
     //data
     //implementation 'com.h2database:h2'
-    implementation 'mysql:mysql-connector-java'
-
+    //implementation 'mysql:mysql-connector-java'
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '4.0.0.RELEASE'
+    testImplementation 'io.jsonwebtoken:jjwt-api:0.11.0'
+    testImplementation 'io.jsonwebtoken:jjwt-impl:0.11.0',
+            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
+            //'org.bouncycastle:bcprov-jdk15on:1.60',
+            'io.jsonwebtoken:jjwt-jackson:0.11.0' // or 'io.jsonwebtoken:jjwt-gson:0.11.0' for gson
 }
 
 
@@ -65,5 +72,5 @@ dependencyManagement {
 }*/
 
 bootJar {
-    mainClassName = 'Main'
+    mainClassName = 'src.App'
 }

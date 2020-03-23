@@ -5,3 +5,8 @@ spring:
     name: authservice
   profiles:
     active: default
+  cloud:
+    config:
+      uri: http://10.128.0.5:9999
+      enabled: true
+      fail-fast: true

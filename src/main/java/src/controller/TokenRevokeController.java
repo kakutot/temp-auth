@@ -29,7 +29,7 @@ public class TokenRevokeController {
     }
 
     //Revoke token == logout on client side
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<?> revokeToken(@RequestBody TokenV tokenV) {
         log.info("revokeToken" + tokenV.token);
         try {

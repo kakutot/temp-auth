@@ -6,9 +6,16 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
     ports:
-      - 3308:3308
+      - 3308:3306
     volumes:
-      - mysql_db_data_container:/var/lib/mysql
+      - mysql_db_data_container:/var/lib/mysql"
+  authservice:
+    depends_on:
+     - mysql_db_container 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: authservice
 volumes:
   mysql_db_data_container:
 
